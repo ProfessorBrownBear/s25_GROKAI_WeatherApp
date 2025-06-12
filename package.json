@@ -1,0 +1,20 @@
+{
+  "name": "grok-weather-rag-app",
+  "version": "1.0.0",
+  "description": "A RAG demo using Open-Meteo and the Grok API.",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "node-fetch": "^3.3.2",
+    "openai": "^4.52.2"
+  }
+}

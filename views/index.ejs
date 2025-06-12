@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG Weather Advisor with Grok</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f0f2f5; color: #1c1e21; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 2rem; }
+        .container { background-color: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 700px; }
+        h1 { color: #0056b3; border-bottom: 2px solid #0056b3; padding-bottom: 0.5rem; }
+        form { display: flex; flex-direction: column; gap: 1rem; }
+        select, textarea, button { font-size: 1rem; padding: 0.75rem; border-radius: 6px; border: 1px solid #ccc; }
+        textarea { resize: vertical; min-height: 80px; }
+        button { background-color: #007bff; color: #fff; border: none; cursor: pointer; transition: background-color 0.2s; font-weight: bold; }
+        button:hover { background-color: #0056b3; }
+        .results-grid { margin-top: 2rem; display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        .result-box { padding: 1.5rem; border-radius: 8px; border: 1px solid #e0e0e0; }
+        .result-box h2 { margin-top: 0; font-size: 1.25rem; color: #333; }
+        .weather-info { background-color: #e7f3ff; }
+        .grok-response { background-color: #f0fdf4; }
+        .grok-response p { white-space: pre-wrap; line-height: 1.6; }
+        .error { color: #d9534f; background-color: #f2dede; padding: 1rem; border-radius: 6px; border: 1px solid #ebccd1; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>RAG Weather Advisor ft. Grok</h1>
+        
+        <form action="/get-recommendations" method="POST">
+            <label for="city-select"><strong>Step 1:</strong> Choose a City</label>
+            <select name="city" id="city-select">
+                <% cities.forEach(city => { %>
+                    <option value="<%= city.name %>" <%= selectedCity === city.name ? 'selected' : '' %>><%= city.name %></option>
+                <% }) %>
+            </select>
+
+            <label for="prompt-input"><strong>Step 2:</strong> Enter Your Request</label>
+            <textarea name="prompt" id="prompt-input"><%= prompt %></textarea>
+
+            <button type="submit">Get Recommendation</button>
+        </form>
+
+        <% if (error) { %>
+            <p class="error"><%= error %></p>
+        <% } %>
+
+        <div class="results-grid">
+            <% if (weather) { %>
+                <div class="result-box weather-info">
+                    <h2>Retrieved Weather Data</h2>
+                    <p><strong>Condition:</strong> <%= weather.description %></p>
+                    <p><strong>Temperature:</strong> <%= weather.temperature %> <%= weather.unit %></p>
+                </div>
+            <% } %>
+
+            <% if (grokResponse) { %>
+                <div class="result-box grok-response">
+                    <h2>Grok's Generated Response</h2>
+                    <p><%= grokResponse %></p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>
